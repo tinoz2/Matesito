@@ -68,9 +68,9 @@ export const login = async (req, res) => {
 }
 
 export const logout = (req, res) => {
-    res.clearCookie('token')
-    res.json({ message: 'Sesión cerrada correctamente' })
-}
+    res.clearCookie('token', { httpOnly: true, secure: true, sameSite: 'None' });
+    res.json({ message: 'Sesión cerrada correctamente' });
+};
 
 export const profile = async (req, res) => {
     try {
@@ -88,6 +88,7 @@ export const profile = async (req, res) => {
             email: userFound.email,
             createdAt: userFound.createdAt,
             updatedAt: userFound.updatedAt,
+            mercadopagoAccessToken: userFound.mercadopagoAccessToken,
         })
     } catch (error) {
         res.status(500).json({ message: error.message })

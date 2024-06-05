@@ -9,7 +9,7 @@ router.post('/login', login)
 
 router.post('/logout', logout)
 
-router.get('/profile/:username', profile)
+router.get('/profile/:username', validateToken, profile)
 
 router.get('/logged', validateToken, logged)
 

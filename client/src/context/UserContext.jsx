@@ -20,10 +20,19 @@ export const UserProvider = ({ children }) => {
         fetchUser();
     }, []);
 
+    const logout = async () => {
+        try {
+            await logoutRequest()
+            setUser(null)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
     console.log(user)
 
     return (
-        <UserContext.Provider value={{ user, setUser }}>
+        <UserContext.Provider value={{ user, setUser, logout }}>
             {children}
         </UserContext.Provider>
     );

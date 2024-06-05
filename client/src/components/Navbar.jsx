@@ -1,18 +1,9 @@
 import icon from '/icon.png'
 import { useUser } from '../context/UserContext.jsx'
-import { logoutRequest } from '../auth/axiosAPI.js'
 
 const Navbar = () => {
 
-    const { user } = useUser()
-
-    const logout = async() => {
-        try {
-            await logoutRequest()
-        } catch (error) {
-            console.log(error)
-        }
-    }
+    const { user, setUser, logout } = useUser()
 
     return (
         <div className="navbar bg-main max-w-7xl m-auto lg:rounded-full lg:mt-12 lg:px-12">
