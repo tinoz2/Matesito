@@ -22,7 +22,6 @@ const ExplorarCreadores = () => {
         const fetchUsers = async () => {
             try {
                 const res = await usersRequest()
-                console.log(res.data)
                 setUsers(res.data.userFound)
                 setFilteredUsers(res.data.userFound)
             } catch (error) {

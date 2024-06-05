@@ -16,7 +16,7 @@ export const register = async (req, res) => {
                 console.log(error)
                 return res.status(500).json({ message: 'Error al generar el token' })
             }
-            res.cookie('token', token, { httpOnly: true })
+            res.cookie('token', token, { httpOnly: true, secure: true, sameSite: 'None' });
             res.json({
                 id: newUser._id,
                 user: newUser.user,
@@ -53,7 +53,7 @@ export const login = async (req, res) => {
                 console.log(error)
                 return res.status(500).json({ message: 'Error al generar el token' })
             }
-            res.cookie('token', token, { httpOnly: true })
+            res.cookie('token', token, { httpOnly: true, secure: true, sameSite: 'None' });
             res.json({
                 id: user._id,
                 user: user.user,

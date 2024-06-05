@@ -145,7 +145,7 @@ const Perfil = () => {
                         </div>
                     </div>
                     :
-                    <button>Enlazar MercadoPago</button>
+                    <a href="https://matesito-production.up.railway.app/mp/callback">Enlazar Mercado Pago</a>
                     }
                 </div>
             </div>
