@@ -10,6 +10,7 @@ import literatura from '/Literatura.svg'
 import Navbar from './Navbar'
 import { useEffect, useState } from 'react'
 import { usersRequest } from '../auth/axiosAPI.js'
+import axios from 'axios'
 
 const ExplorarCreadores = () => {
     const [users, setUsers] = useState([])
@@ -21,6 +22,7 @@ const ExplorarCreadores = () => {
         const fetchUsers = async () => {
             try {
                 const res = await usersRequest()
+                console.log(res.data)
                 setUsers(res.data.userFound)
                 setFilteredUsers(res.data.userFound)
             } catch (error) {
