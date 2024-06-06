@@ -20,6 +20,7 @@ const Perfil = () => {
         const userData = async () => {
             try {
                 const res = await profileRequest(username)
+                console.log(res.data)
                 setProfileData(res.data)
             } catch (error) {
                 console.log(error)

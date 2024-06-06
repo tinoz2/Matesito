@@ -26,6 +26,7 @@ const cuentaMercadoPago = async (req, res) => {
         });
 
         const { access_token, user_id } = response.data;
+        console.log(access_token, user_id)
 
         const user = await User.findOne({ where: { id: user_id } });
         if (user) {
@@ -34,6 +35,7 @@ const cuentaMercadoPago = async (req, res) => {
         } else {
             return res.status(404).json({ message: 'Usuario no encontrado' });
         }
+        console.log(user)
 
         res.json({ message: 'Cuenta de MercadoPago enlazada exitosamente!', access_token, user_id });
     } catch (error) {

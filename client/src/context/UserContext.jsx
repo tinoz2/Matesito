@@ -1,5 +1,5 @@
 import { createContext, useState, useContext, useEffect } from 'react';
-import { loggedRequest } from '../auth/axiosAPI';
+import { loggedRequest, logoutRequest } from '../auth/axiosAPI';
 
 const UserContext = createContext();
 
@@ -28,8 +28,6 @@ export const UserProvider = ({ children }) => {
             console.log(error)
         }
     }
-
-    console.log(user)
 
     return (
         <UserContext.Provider value={{ user, setUser, logout }}>
