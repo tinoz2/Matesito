@@ -26,10 +26,8 @@ const userSchema = new mongoose.Schema({
     banner: {
         type: String
     },
-    mercadopagoAccessToken: {
-        type: String
-    }
+    mercadopagoAccessToken: { type: String, default: null },
 
-}, {timestamps: true})
+}, { timestamps: true })
 
 export default mongoose.model('User', userSchema)

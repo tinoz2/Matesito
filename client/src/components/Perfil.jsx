@@ -20,7 +20,6 @@ const Perfil = () => {
         const userData = async () => {
             try {
                 const res = await profileRequest(username)
-                console.log(res.data)
                 setProfileData(res.data)
             } catch (error) {
                 console.log(error)
@@ -57,6 +56,28 @@ const Perfil = () => {
     }
 
     const mp = false
+
+    const disconnectMercadoPago = async () => {
+        try {
+            const response = await fetch('/api/mp/disconnect', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ user_id: profileData.id }), // Asegúrate de obtener el user_id de la manera correcta
+            });
+
+            const data = await response.json();
+            if (response.ok) {
+                console.log(data.message);
+                setProfileData({ ...profileData, mercadopagoAccessToken: null });
+            } else {
+                console.error('Error:', data.message);
+            }
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    };
 
     return (
         <section className="relative bg-white">
@@ -119,34 +140,35 @@ const Perfil = () => {
                     </div>
                     {
                         mp ? <div className='border p-4 rounded-lg space-y-4 h-full'>
-                        <div className='flex items-center border border-third p-4 rounded-lg space-x-3'>
-                            <img src={logo} className='w-16 h-16' alt="" />
-                            <span>x</span>
-                            <button className='text-lg border h-10 w-10 justify-center items-center' style={{ borderRadius: '50%' }} onClick={() => handleMatesitosChange(1)}>1</button>
-                            <button className='text-lg border h-10 w-10' style={{ borderRadius: '50%' }} onClick={() => handleMatesitosChange(3)}>3</button>
-                            <button className='text-lg border h-10 w-10' style={{ borderRadius: '50%' }} onClick={() => handleMatesitosChange(5)}>5</button>
-                            <span>o</span>
-                            <input className='border p-2 text-center rounded-lg border-third bg-white w-12' type="text" value={matesitos} onChange={handleInputChange} />
+                            <div className='flex items-center border border-third p-4 rounded-lg space-x-3'>
+                                <img src={logo} className='w-16 h-16' alt="" />
+                                <span>x</span>
+                                <button className='text-lg border h-10 w-10 justify-center items-center' style={{ borderRadius: '50%' }} onClick={() => handleMatesitosChange(1)}>1</button>
+                                <button className='text-lg border h-10 w-10' style={{ borderRadius: '50%' }} onClick={() => handleMatesitosChange(3)}>3</button>
+                                <button className='text-lg border h-10 w-10' style={{ borderRadius: '50%' }} onClick={() => handleMatesitosChange(5)}>5</button>
+                                <span>o</span>
+                                <input className='border p-2 text-center rounded-lg border-third bg-white w-12' type="text" value={matesitos} onChange={handleInputChange} />
+                            </div>
+                            <div className='flex flex-col'>
+                                <input className='border p-2 rounded-lg border-third bg-white'
+                                    type="text"
+                                    placeholder='Nombre (Opcional)' />
+                                <textarea className='border p-2 rounded-lg border-third bg-white mt-2'
+                                    name="" id="" cols="20" rows="3" placeholder='Mensaje (Opcional)'></textarea>
+                            </div>
+                            <div className='flex justify-between items-center'>
+                                <hr className='hr-3 w-1/6' />
+                                <span className='text-sm'>Invitame {matesitos} matesitos ({matesitos * 100} ARS)</span>
+                                <hr className='hr-3 w-1/6' />
+                            </div>
+                            <div className='flex justify-center items-center flex-col'>
+                                <button className='p-2 rounded-lg text-white font-semibold w-full bg-secondary'>{matesitos * 100} ARS</button>
+                                <img src={mp} className='mt-4 w-1/3' alt="" />
+                            </div>
                         </div>
-                        <div className='flex flex-col'>
-                            <input className='border p-2 rounded-lg border-third bg-white'
-                                type="text"
-                                placeholder='Nombre (Opcional)' />
-                            <textarea className='border p-2 rounded-lg border-third bg-white mt-2'
-                                name="" id="" cols="20" rows="3" placeholder='Mensaje (Opcional)'></textarea>
-                        </div>
-                        <div className='flex justify-between items-center'>
-                            <hr className='hr-3 w-1/6' />
-                            <span className='text-sm'>Invitame {matesitos} matesitos ({matesitos * 100} ARS)</span>
-                            <hr className='hr-3 w-1/6' />
-                        </div>
-                        <div className='flex justify-center items-center flex-col'>
-                            <button className='p-2 rounded-lg text-white font-semibold w-full bg-secondary'>{matesitos * 100} ARS</button>
-                            <img src={mp} className='mt-4 w-1/3' alt="" />
-                        </div>
-                    </div>
-                    :
-                    <a href="https://matesito-production.up.railway.app/mp/callback">Enlazar Mercado Pago</a>
+                            :
+                            <button onClick={disconnectMercadoPago}>Desconectar Mercado Pago</button>
+                        /*<a href="https://matesito-production.up.railway.app/mp/callback">Enlazar Mercado Pago</a>*/
                     }
                 </div>
             </div>

@@ -44,4 +44,22 @@ const cuentaMercadoPago = async (req, res) => {
     }
 };
 
+export const disconnectMercadoPago = async (req, res) => {
+    try {
+        const { user_id } = req.body;
+
+        const user = await User.findOne({ where: { id: user_id } });
+        if (user) {
+            user.mercadopagoAccessToken = null;
+            await user.save();
+            return res.json({ message: 'Cuenta de MercadoPago desconectada exitosamente!' });
+        } else {
+            return res.status(404).json({ message: 'Usuario no encontrado' });
+        }
+    } catch (error) {
+        console.error('Error al desconectar la cuenta de MercadoPago:', error);
+        res.status(500).json({ message: error.message });
+    }
+}
+
 export default cuentaMercadoPago;
