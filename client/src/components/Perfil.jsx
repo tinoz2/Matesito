@@ -8,6 +8,7 @@ import mp from '/mp.png'
 import { useEffect, useState } from 'react'
 import { profileRequest } from '../auth/axiosAPI.js'
 import { useParams } from 'react-router-dom'
+import { disconnectMercadoPagoRequest } from '../auth/axiosAPI.js'
 
 const Perfil = () => {
 
@@ -57,22 +58,14 @@ const Perfil = () => {
 
     const mp = false
 
-    const disconnectMercadoPago = async () => {
+    const handleDisconnectMercadoPago = async () => {
         try {
-            const response = await fetch('/api/mp/disconnect', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ user_id: profileData.id }), // Asegúrate de obtener el user_id de la manera correcta
-            });
-
-            const data = await response.json();
-            if (response.ok) {
-                console.log(data.message);
+            const response = await disconnectMercadoPagoRequest(profileData.id);
+            if (response.status === 200) {
+                console.log(response.data.message);
                 setProfileData({ ...profileData, mercadopagoAccessToken: null });
             } else {
-                console.error('Error:', data.message);
+                console.error('Error:', response.data.message);
             }
         } catch (error) {
             console.error('Error:', error);
@@ -167,7 +160,7 @@ const Perfil = () => {
                             </div>
                         </div>
                             :
-                            <button onClick={disconnectMercadoPago}>Desconectar Mercado Pago</button>
+                            <button onClick={handleDisconnectMercadoPago}>Desconectar Mercado Pago</button>
                         /*<a href="https://matesito-production.up.railway.app/mp/callback">Enlazar Mercado Pago</a>*/
                     }
                 </div>

@@ -23,3 +23,7 @@ export const loggedRequest = () => {
 export const logoutRequest = () => {
     return instance.post('/users/logout')
 }
+
+export const disconnectMercadoPagoRequest = (userId) => {
+    return instance.post('/mp/disconnect', { user_id: userId })
+}
