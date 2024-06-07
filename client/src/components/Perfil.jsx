@@ -17,7 +17,8 @@ const Perfil = () => {
     const [profileData, setProfileData] = useState(null)
     const [loading, setLoading] = useState(true)
     const [matesitos, setMatesitos] = useState('1')
-    const { accessToken } = useUser()
+    const { accessToken, user } = useUser()
+    const userFound = user.user
 
     useEffect(() => {
         const userData = async () => {
@@ -36,7 +37,7 @@ const Perfil = () => {
     const handleMercadoPago = async () => {
         try {
             window.location.href = 'https://matesito-production.up.railway.app/mp/callback'
-            return await connectMercadoPagoRequest({ accessToken })
+            return await connectMercadoPagoRequest({ accessToken, userFound })
         } catch (error) {
             console.log(error)
         }

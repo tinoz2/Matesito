@@ -11,8 +11,8 @@ const REDIRECT_URI = process.env.MERCADOPAGO_REDIRECT_URI;
 const cuentaMercadoPago = async (req, res) => {
     try {
         const { code } = req.query
-        const { access_token } = req.body
-        console.log(access_token)
+        const { access_token, user} = req.body
+        console.log(access_token, user)
 
         if (!code) {
             const authURL = `https://auth.mercadopago.com.ar/authorization?client_id=${CLIENT_ID}&response_type=code&platform_id=mp&state=${CLIENT_SECRET}&redirect_url=${REDIRECT_URI}`;
@@ -27,10 +27,10 @@ const cuentaMercadoPago = async (req, res) => {
             redirect_uri: REDIRECT_URI
         });
 
-        const user = await User.findOne({ mercadopagoAccessToken: access_token });
-        if (user) {
-            user.mercadopagoAccessToken = access_token;
-            await user.save();
+        const userFound = await User.findOne({ user });
+        if (userFound) {
+            userFound.mercadopagoAccessToken = access_token;
+            await userFound.save();
         } else {
             return res.status(404).json({ message: 'Usuario no encontrado' });
         }
