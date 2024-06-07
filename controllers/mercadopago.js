@@ -27,16 +27,15 @@ const cuentaMercadoPago = async (req, res) => {
             redirect_uri: REDIRECT_URI
         });
 
-        const user = await User.findOne({ where: { id: userId } });
+        const user = await User.findOne({ mercadopagoAccessToken: access_token });
         if (user) {
             user.mercadopagoAccessToken = access_token;
             await user.save();
         } else {
             return res.status(404).json({ message: 'Usuario no encontrado' });
         }
-        console.log(user)
 
-        res.json({ message: 'Cuenta de MercadoPago enlazada exitosamente!', access_token, user_id });
+        res.json({ message: 'Cuenta de MercadoPago enlazada exitosamente!', access_token });
     } catch (error) {
         console.error('Error al enlazar la cuenta de MercadoPago:', error);
         res.status(500).json({ message: error.message });
