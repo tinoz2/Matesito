@@ -31,6 +31,14 @@ const Perfil = () => {
         userData()
     }, [username])
 
+    const handleMercadoPago = async () => {
+        try {
+            window.location.href = 'https://matesito-production.up.railway.app/mp/callback'
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
     if (loading) return <div>Loading...</div>;
 
     if (!profileData) return <div>Usuario no encontrado</div>;
@@ -160,8 +168,7 @@ const Perfil = () => {
                             </div>
                         </div>
                             :
-                            <button onClick={handleDisconnectMercadoPago}>Desconectar Mercado Pago</button>
-                        /*<a href="https://matesito-production.up.railway.app/mp/callback">Enlazar Mercado Pago</a>*/
+                            <button onClick={handleMercadoPago}>Enlazar Mercado Pago</button>
                     }
                 </div>
             </div>

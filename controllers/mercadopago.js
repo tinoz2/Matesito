@@ -11,8 +11,8 @@ const REDIRECT_URI = process.env.MERCADOPAGO_REDIRECT_URI;
 const cuentaMercadoPago = async (req, res) => {
     try {
         const { code } = req.query
-        const userId = req.user ? req.user.id : null;
-        console.log(userId)
+        const { access_token } = req.body
+        console.log(access_token)
 
         if (!code) {
             const authURL = `https://auth.mercadopago.com.ar/authorization?client_id=${CLIENT_ID}&response_type=code&platform_id=mp&state=${CLIENT_SECRET}&redirect_url=${REDIRECT_URI}`;
@@ -26,9 +26,6 @@ const cuentaMercadoPago = async (req, res) => {
             code: code,
             redirect_uri: REDIRECT_URI
         });
-
-        const { access_token } = response.data;
-        console.log(response.data)
 
         const user = await User.findOne({ where: { id: userId } });
         if (user) {
