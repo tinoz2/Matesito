@@ -24,6 +24,10 @@ export const logoutRequest = () => {
     return instance.post('/users/logout')
 }
 
+export const connectMercadoPagoRequest = (token) => {
+    return instance.post('/mp/callback', { access_token: token });
+}
+
 export const disconnectMercadoPagoRequest = (userId) => {
     return instance.post('/mp/disconnect', { user_id: userId })
 }

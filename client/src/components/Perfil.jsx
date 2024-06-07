@@ -6,9 +6,10 @@ import yt from '/yt.svg'
 import logo from '/icon.png'
 import mp from '/mp.png'
 import { useEffect, useState } from 'react'
-import { profileRequest } from '../auth/axiosAPI.js'
+import { connectMercadoPagoRequest, profileRequest } from '../auth/axiosAPI.js'
 import { useParams } from 'react-router-dom'
 import { disconnectMercadoPagoRequest } from '../auth/axiosAPI.js'
+import { useUser } from '../context/UserContext.jsx'
 
 const Perfil = () => {
 
@@ -16,6 +17,7 @@ const Perfil = () => {
     const [profileData, setProfileData] = useState(null)
     const [loading, setLoading] = useState(true)
     const [matesitos, setMatesitos] = useState('1')
+    const { accessToken } = useUser()
 
     useEffect(() => {
         const userData = async () => {
@@ -33,7 +35,8 @@ const Perfil = () => {
 
     const handleMercadoPago = async () => {
         try {
-            window.location.href = 'https://matesito-production.up.railway.app/mp/callback'
+            const res = await connectMercadoPagoRequest(accessToken)
+            return window.location.href = 'https://matesito-production.up.railway.app/mp/callback'
         } catch (error) {
             console.log(error)
         }
