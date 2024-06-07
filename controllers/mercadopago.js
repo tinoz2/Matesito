@@ -16,7 +16,7 @@ const cuentaMercadoPago = async (req, res) => {
 
         if (!code) {
             const authURL = `https://auth.mercadopago.com.ar/authorization?client_id=${CLIENT_ID}&response_type=code&platform_id=mp&state=${CLIENT_SECRET}&redirect_url=${REDIRECT_URI}`;
-            return res.redirect(authURL);
+            res.redirect(authURL);
         }
 
         const response = await axios.post('https://api.mercadopago.com/oauth/token', {
@@ -27,6 +27,7 @@ const cuentaMercadoPago = async (req, res) => {
             redirect_uri: REDIRECT_URI
         });
 
+        console.log('first')
         const userFound = await User.findOne({ user });
         if (userFound) {
             userFound.mercadopagoAccessToken = access_token;

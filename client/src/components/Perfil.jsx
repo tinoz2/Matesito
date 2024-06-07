@@ -18,7 +18,7 @@ const Perfil = () => {
     const [loading, setLoading] = useState(true)
     const [matesitos, setMatesitos] = useState('1')
     const { accessToken, user } = useUser()
-    const userFound = user.user
+    const userFound = user ? user.user : null
 
     useEffect(() => {
         const userData = async () => {
