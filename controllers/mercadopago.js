@@ -12,7 +12,6 @@ const cuentaMercadoPago = async (req, res) => {
     try {
         const { access_token, user} = req.body
         console.log(access_token, user)
-        console.log('s')
 
         const userFound = await User.findOne({ user });
         console.log(userFound)
