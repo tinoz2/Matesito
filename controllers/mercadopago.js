@@ -10,16 +10,16 @@ const REDIRECT_URI = process.env.MERCADOPAGO_REDIRECT_URI;
 
 const cuentaMercadoPago = async (req, res) => {
     try {
-        const { code } = req.query
-        const { access_token, user} = req.body
-        console.log(access_token, user)
+        const { code } = req.query;
+        const { access_token, user } = req.body;
+        console.log('Access Token:', access_token, 'User:', user);
 
         if (!code) {
-            const authURL = `https://auth.mercadopago.com.ar/authorization?client_id=${CLIENT_ID}&response_type=code&platform_id=mp&state=${CLIENT_SECRET}&redirect_url=${REDIRECT_URI}`;
-            res.redirect(authURL);
+            const authURL = `https://auth.mercadopago.com.ar/authorization?client_id=${CLIENT_ID}&response_type=code&platform_id=mp&state=${CLIENT_SECRET}&redirect_uri=${REDIRECT_URI}`;
+            return res.redirect(authURL);
         }
 
-        const response = await axios.post('https://api.mercadopago.com/oauth/token', {
+        const tokenResponse = await axios.post('https://api.mercadopago.com/oauth/token', {
             grant_type: 'authorization_code',
             client_id: CLIENT_ID,
             client_secret: CLIENT_SECRET,
@@ -27,19 +27,32 @@ const cuentaMercadoPago = async (req, res) => {
             redirect_uri: REDIRECT_URI
         });
 
-        console.log('first')
-        const userFound = await User.findOne({ user });
-        if (userFound) {
-            userFound.mercadopagoAccessToken = access_token;
-            await userFound.save();
-        } else {
+        const { access_token: newAccessToken } = tokenResponse.data;
+        console.log('OAuth Response:', tokenResponse.data);
+
+        const userFound = await User.findOne({ username: user });
+        if (!userFound) {
             return res.status(404).json({ message: 'Usuario no encontrado' });
         }
 
-        res.json({ message: 'Cuenta de MercadoPago enlazada exitosamente!', access_token });
+        userFound.mercadopagoAccessToken = newAccessToken;
+        await userFound.save();
+
+        res.json({ message: 'Cuenta de MercadoPago enlazada exitosamente!', access_token: newAccessToken });
     } catch (error) {
-        console.error('Error al enlazar la cuenta de MercadoPago:', error);
-        res.status(500).json({ message: error.message });
+        if (error.response) {
+            console.error('Error response data:', error.response.data);
+            console.error('Error response status:', error.response.status);
+            console.error('Error response headers:', error.response.headers);
+            res.status(error.response.status).json({ message: error.response.data });
+        } else if (error.request) {
+            console.error('Error request data:', error.request);
+            res.status(500).json({ message: 'No se recibió respuesta de MercadoPago' });
+        } else {
+            console.error('Error message:', error.message);
+            res.status(500).json({ message: error.message });
+        }
+        console.error('Error config:', error.config);
     }
 };
 
