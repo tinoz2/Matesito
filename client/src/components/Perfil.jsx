@@ -36,11 +36,15 @@ const Perfil = () => {
 
     const handleMercadoPago = async () => {
         try {
-            return await connectMercadoPagoRequest({ accessToken, userFound })
+            const CLIENT_ID = '1654723639429334'
+            const REDIRECT_URI = 'https://matesito-production.up.railway.app/mp/callback'
+            const authURL = `https://auth.mercadopago.com.ar/authorization?client_id=${CLIENT_ID}&response_type=code&platform_id=mp&state=state123&redirect_uri=${REDIRECT_URI}`;
+            window.location.href = authURL;
         } catch (error) {
-            console.log(error)
+            console.log(error);
         }
     }
+
 
     if (loading) return <div>Loading...</div>;
 
