@@ -36,7 +36,6 @@ const Perfil = () => {
 
     const handleMercadoPago = async () => {
         try {
-            window.location.href = 'https://matesito-production.up.railway.app/mp/callback'
             return await connectMercadoPagoRequest({ accessToken, userFound })
         } catch (error) {
             console.log(error)
