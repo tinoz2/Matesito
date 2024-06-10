@@ -25,6 +25,7 @@ const cuentaMercadoPago = async (req, res) => {
             redirect_uri: REDIRECT_URI
         });
         console.log(response)
+        console.log('first')
 
         const access_token = response.data.access_token;
         console.log(access_token)
