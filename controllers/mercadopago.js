@@ -11,7 +11,7 @@ const REDIRECT_URI = 'https://matesito-production.up.railway.app/mp/callback'
 const cuentaMercadoPago = async (req, res) => {
     try {
         const { code } = req.query;
-        const token = req.cookies.token
+        const { token } = req.body
         console.log(token)
 
         if (!code) {

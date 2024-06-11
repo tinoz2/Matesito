@@ -35,8 +35,9 @@ const Perfil = () => {
 
     const handleMercadoPago = async () => {
         try {
-            const token = 'mitoken';
-            document.cookie = `token=${token}; path=/`;
+            await axios.post('https://matesito-production.up.railway.app/mp/callback', {
+                token: accessToken
+            })
             window.location.href = 'https://matesito-production.up.railway.app/mp/callback';
         } catch (error) {
             console.log(error);
