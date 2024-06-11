@@ -8,7 +8,6 @@ import mp from '/mp.png'
 import { useEffect, useState } from 'react'
 import { connectMercadoPagoRequest, profileRequest } from '../auth/axiosAPI.js'
 import { useParams } from 'react-router-dom'
-import { disconnectMercadoPagoRequest } from '../auth/axiosAPI.js'
 import { useUser } from '../context/UserContext.jsx'
 import axios from 'axios'
 
@@ -37,7 +36,7 @@ const Perfil = () => {
 
     const handleMercadoPago = async () => {
         try {
-            window.location.href = authURL;
+            window.location.href = 'https://matesito-production.up.railway.app/mp/callback'
         } catch (error) {
             console.log(error);
         }
@@ -70,16 +69,6 @@ const Perfil = () => {
     }
 
     const mp = false
-
-    const handleDisconnectMercadoPago = async () => {
-        try {
-            const res = axios.post('https://api.mercadopago.com')
-            console.log(res.data)
-        } catch (error) {
-            console.error('Error al desconectar Mercado Pago:', error);
-            // Muestra un mensaje de error en la consola o en la interfaz de usuario
-        }
-    };    
 
     return (
         <section className="relative bg-white">
@@ -140,7 +129,6 @@ const Perfil = () => {
                             <p>Alguien compró 1 matesito</p>
                         </div>
                     </div>
-                    <button onClick={handleDisconnectMercadoPago}>Desconectar mp</button>
                     {
                         mp ? <div className='border p-4 rounded-lg space-y-4 h-full'>
                             <div className='flex items-center border border-third p-4 rounded-lg space-x-3'>

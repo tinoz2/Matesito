@@ -4,9 +4,9 @@ import User from '../schemas/User.js'
 
 dotenv.config();
 
-const CLIENT_ID = process.env.MERCADOPAGO_CLIENT_ID;
-const CLIENT_SECRET = process.env.MERCADOPAGO_CLIENT_SECRET
-const REDIRECT_URI = process.env.MERCADOPAGO_REDIRECT_URI;
+const CLIENT_ID = '212521077347976'
+const CLIENT_SECRET = 'X4kFm7KUQ14NcaHu5JemnZHJUYomvIjb'
+const REDIRECT_URI = 'https://matesito-production.up.railway.app/mp/callback'
 
 const cuentaMercadoPago = async (req, res) => {
     try {
