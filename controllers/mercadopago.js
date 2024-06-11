@@ -10,11 +10,12 @@ const REDIRECT_URI = process.env.MERCADOPAGO_REDIRECT_URI;
 
 const cuentaMercadoPago = async (req, res) => {
     try {
-        const { code } = req.body;
+        const { code } = req.query;
         console.log(code)
 
         if (!code) {
-            return res.status(400).json({ message: 'Código de autorización faltante' });
+            const authURL = `https://auth.mercadopago.com.ar/authorization?client_id=${CLIENT_ID}&response_type=code&platform_id=mp&state=${CLIENT_SECRET}&redirect_url=${REDIRECT_URI}`;
+            return res.redirect(authURL)
         }
 
         const response = await axios.post('https://api.mercadopago.com/oauth/token', {
@@ -25,7 +26,6 @@ const cuentaMercadoPago = async (req, res) => {
             redirect_uri: REDIRECT_URI
         });
         console.log(response)
-        console.log('first')
 
         const access_token = response.data.access_token;
         console.log(access_token)
@@ -39,20 +39,22 @@ const cuentaMercadoPago = async (req, res) => {
 
 export const disconnectMercadoPago = async (req, res) => {
     try {
-        const { user_id } = req.body;
+        const { userId } = req.body;
+        console.log(userId)
+        const response = await axios.post('https://api.mercadopago.com/v1/oauth/token/revoke', {
+            user_id: userId,
+            client_id: process.env.MERCADOPAGO_CLIENT_ID,
+            client_secret: process.env.MERCADOPAGO_CLIENT_SECRET,
+        });
+        
+        await deleteMercadoPagoAuthorization(userId);
 
-        const user = await User.findOne({ where: { id: user_id } });
-        if (user) {
-            user.mercadopagoAccessToken = null;
-            await user.save();
-            return res.json({ message: 'Cuenta de MercadoPago desconectada exitosamente!' });
-        } else {
-            return res.status(404).json({ message: 'Usuario no encontrado' });
-        }
+        // Responde con éxito
+        res.status(200).json({ message: 'Revocación de acceso exitosa' });
     } catch (error) {
-        console.error('Error al desconectar la cuenta de MercadoPago:', error);
-        res.status(500).json({ message: error.message });
+        console.error('Error al revocar el acceso a Mercado Pago:', error);
+        res.status(500).json({ message: 'Error al revocar el acceso a Mercado Pago' });
     }
-}
+};
 
 export default cuentaMercadoPago;

@@ -9,7 +9,6 @@ import ExplorarCreadores from './components/ExplorarCreadores'
 import Perfil from './components/Perfil'
 import CrearCuenta from './components/CrearCuenta'
 import { UserProvider } from './context/UserContext'
-import MercadoPagoCallback from './components/MercadoPagoCallback'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <UserProvider>
@@ -20,7 +19,6 @@ ReactDOM.createRoot(document.getElementById('root')).render(
         <Route path='/perfil' element={<ExplorarCreadores />} />
         <Route path='/perfil/:username' element={<Perfil />} />
         <Route path='/crearcuenta' element={<CrearCuenta />} />
-        <Route path='/mp/callback' element={<MercadoPagoCallback />} />
       </Routes>
       <Footer />
     </BrowserRouter>

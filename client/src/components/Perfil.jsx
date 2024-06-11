@@ -10,6 +10,7 @@ import { connectMercadoPagoRequest, profileRequest } from '../auth/axiosAPI.js'
 import { useParams } from 'react-router-dom'
 import { disconnectMercadoPagoRequest } from '../auth/axiosAPI.js'
 import { useUser } from '../context/UserContext.jsx'
+import axios from 'axios'
 
 const Perfil = () => {
 
@@ -36,9 +37,6 @@ const Perfil = () => {
 
     const handleMercadoPago = async () => {
         try {
-            const CLIENT_ID = '1654723639429334'
-            const REDIRECT_URI = 'https://matesito-production.up.railway.app/mp/callback'
-            const authURL = `https://auth.mercadopago.com.ar/authorization?client_id=${CLIENT_ID}&response_type=code&platform_id=mp&state=state123&redirect_uri=${REDIRECT_URI}`;
             window.location.href = authURL;
         } catch (error) {
             console.log(error);
@@ -75,17 +73,13 @@ const Perfil = () => {
 
     const handleDisconnectMercadoPago = async () => {
         try {
-            const response = await disconnectMercadoPagoRequest(profileData.id);
-            if (response.status === 200) {
-                console.log(response.data.message);
-                setProfileData({ ...profileData, mercadopagoAccessToken: null });
-            } else {
-                console.error('Error:', response.data.message);
-            }
+            const res = axios.post('https://api.mercadopago.com')
+            console.log(res.data)
         } catch (error) {
-            console.error('Error:', error);
+            console.error('Error al desconectar Mercado Pago:', error);
+            // Muestra un mensaje de error en la consola o en la interfaz de usuario
         }
-    };
+    };    
 
     return (
         <section className="relative bg-white">
@@ -146,6 +140,7 @@ const Perfil = () => {
                             <p>Alguien compró 1 matesito</p>
                         </div>
                     </div>
+                    <button onClick={handleDisconnectMercadoPago}>Desconectar mp</button>
                     {
                         mp ? <div className='border p-4 rounded-lg space-y-4 h-full'>
                             <div className='flex items-center border border-third p-4 rounded-lg space-x-3'>
