@@ -1,11 +1,11 @@
 import express from 'express'
-import cuentaMercadoPago, { disconnectMercadoPago } from '../controllers/mercadopago.js'
+import cuentaMercadoPago, { checkoutMercadoPago } from '../controllers/mercadopago.js'
 const router = express.Router()
 
 router.route('/callback')
     .get(cuentaMercadoPago)
     .post(cuentaMercadoPago);
 
-router.post('/disconnect', disconnectMercadoPago)
+router.post('/checkout', checkoutMercadoPago)
 
 export default router

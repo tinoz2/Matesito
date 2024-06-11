@@ -6,10 +6,9 @@ import yt from '/yt.svg'
 import logo from '/icon.png'
 import mp from '/mp.png'
 import { useEffect, useState } from 'react'
-import { connectMercadoPagoRequest, profileRequest } from '../auth/axiosAPI.js'
+import { profileRequest } from '../auth/axiosAPI.js'
 import { useParams } from 'react-router-dom'
 import { useUser } from '../context/UserContext.jsx'
-import axios from 'axios'
 
 const Perfil = () => {
 
