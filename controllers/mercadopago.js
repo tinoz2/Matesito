@@ -26,7 +26,7 @@ const cuentaMercadoPago = async (req, res) => {
         });
 
         const access_token = response.data.access_token;
-        const userId = req.user ? req.user.id : null
+        const userId = req.user.id
         console.log(userId)
         await User.findByIdAndUpdate(userId, { mercadoPagoAccessToken: access_token });
 
