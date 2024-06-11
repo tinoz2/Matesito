@@ -9,6 +9,7 @@ import { useEffect, useState } from 'react'
 import { profileRequest } from '../auth/axiosAPI.js'
 import { useParams } from 'react-router-dom'
 import { useUser } from '../context/UserContext.jsx'
+import axios from 'axios'
 
 const Perfil = () => {
 
@@ -35,10 +36,10 @@ const Perfil = () => {
 
     const handleMercadoPago = async () => {
         try {
-            await axios.post('https://matesito-production.up.railway.app/mp/callback', {
+            window.location.href = 'https://matesito-production.up.railway.app/mp/callback';
+            return await axios.post('https://matesito-production.up.railway.app/mp/callback', {
                 token: accessToken
             })
-            window.location.href = 'https://matesito-production.up.railway.app/mp/callback';
         } catch (error) {
             console.log(error);
         }
