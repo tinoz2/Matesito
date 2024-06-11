@@ -25,6 +25,12 @@ const cuentaMercadoPago = async (req, res) => {
             client_secret: CLIENT_SECRET,
             code: code,
             redirect_uri: REDIRECT_URI
+        }, {
+            headers: {
+                'Access-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Methods': 'POST',
+                'Access-Control-Allow-Headers': 'Content-Type',
+            }
         });
 
         console.log(token)

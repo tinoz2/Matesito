@@ -20,6 +20,7 @@ const Perfil = () => {
     const { accessToken, user } = useUser()
     const userFound = user ? user.user : null
 
+    console.log(accessToken)
     useEffect(() => {
         const userData = async () => {
             try {
@@ -36,14 +37,23 @@ const Perfil = () => {
 
     const handleMercadoPago = async () => {
         try {
-            window.location.href = 'https://matesito-production.up.railway.app/mp/callback';
-            return await axios.post('https://matesito-production.up.railway.app/mp/callback', {
+            // Realiza la solicitud para enviar el token
+            const response = await axios.post('https://matesito-production.up.railway.app/mp/callback', {
                 token: accessToken
-            })
+            });
+    
+            // Verifica si la solicitud POST fue exitosa
+            if (response.status === 200) {
+                // Redirige a la URL deseada después de la solicitud POST exitosa
+                window.location.href = 'https://matesito-production.up.railway.app/mp/callback';
+            } else {
+                console.log('Error en la solicitud POST');
+            }
         } catch (error) {
-            console.log(error);
+            console.log('Error:', error);
         }
     }
+    
 
 
     if (loading) return <div>Loading...</div>;
