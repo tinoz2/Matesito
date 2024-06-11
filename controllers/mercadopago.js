@@ -11,6 +11,8 @@ const REDIRECT_URI = 'https://matesito-production.up.railway.app/mp/callback'
 const cuentaMercadoPago = async (req, res) => {
     try {
         const { code } = req.query;
+        const token = req.cookies.token
+        console.log(token)
 
         if (!code) {
             const authURL = `https://auth.mercadopago.com.ar/authorization?client_id=${CLIENT_ID}&response_type=code&platform_id=mp&state=${CLIENT_SECRET}&redirect_url=${REDIRECT_URI}`;
@@ -24,6 +26,8 @@ const cuentaMercadoPago = async (req, res) => {
             code: code,
             redirect_uri: REDIRECT_URI
         });
+
+        console.log(token)
 
         const access_token = response.data.access_token;
         res.json({ access_token })

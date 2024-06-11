@@ -35,7 +35,9 @@ const Perfil = () => {
 
     const handleMercadoPago = async () => {
         try {
-            window.location.href = 'https://matesito-production.up.railway.app/mp/callback'
+            const token = 'mitoken';
+            document.cookie = `token=${token}; path=/`;
+            window.location.href = 'https://matesito-production.up.railway.app/mp/callback';
         } catch (error) {
             console.log(error);
         }
