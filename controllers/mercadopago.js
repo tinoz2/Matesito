@@ -26,13 +26,7 @@ const cuentaMercadoPago = async (req, res) => {
         });
 
         const access_token = response.data.access_token;
-        const userId = req.user.id
-        console.log(userId)
-        res.json({userId, access_token})
-        /*await User.findByIdAndUpdate(userId, { mercadoPagoAccessToken: access_token });
-
-        if (access_token)
-            return res.redirect('http://localhost:5173/perfil')*/
+        res.json({ access_token })
 
     } catch (error) {
         console.error('Error al enlazar la cuenta de MercadoPago:', error);
