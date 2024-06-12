@@ -37,10 +37,10 @@ const cuentaMercadoPago = async (req, res) => {
         console.log(`Received userId: ${userId}`);
 
         // Actualiza el usuario con el token de acceso de MercadoPago
-        const updateResult = await User.findByIdAndUpdate(userId, { mercadoPagoAccessToken: access_token });
+        const updateResult = await User.findByIdAndUpdate(userId, { mercadopagoAccessToken: access_token });
         console.log(`Update result: ${updateResult}`);
 
-        if (updateResult) {
+        if (updateResult) { 
             return res.redirect('http://localhost:5173/perfil');
         } else {
             res.json({ message: 'No se pudo añadir tu access token.' });
