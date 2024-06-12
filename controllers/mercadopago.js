@@ -4,15 +4,15 @@ import { MercadoPagoConfig, Preference } from 'mercadopago';
 import User from '../schemas/User.js'
 dotenv.config();
 
-const CLIENT_ID = '212521077347976'
-const CLIENT_SECRET = 'X4kFm7KUQ14NcaHu5JemnZHJUYomvIjb'
-const REDIRECT_URI = 'https://matesito-production.up.railway.app/mp/callback'
+const CLIENT_ID = process.env.MERCADOPAGO_CLIENT_ID
+const CLIENT_SECRET = process.env.MERCADOPAGO_CLIENT_SECRET
+const REDIRECT_URI = process.env.MERCADOPAGO_REDIRECT_URI
 
 const cuentaMercadoPago = async (req, res) => {
     try {
         const { code } = req.query;
-        const { token } = req.body
-        console.log('Mi Token del Back' + token)
+        const token = req.query.token;
+        console.log('Token recibido:', token);
 
         if (!code) {
             const authURL = `https://auth.mercadopago.com.ar/authorization?client_id=${CLIENT_ID}&response_type=code&platform_id=mp&state=${CLIENT_SECRET}&redirect_url=${REDIRECT_URI}`;
@@ -25,15 +25,7 @@ const cuentaMercadoPago = async (req, res) => {
             client_secret: CLIENT_SECRET,
             code: code,
             redirect_uri: REDIRECT_URI
-        }, {
-            headers: {
-                'Access-Control-Allow-Origin': '*',
-                'Access-Control-Allow-Methods': 'POST',
-                'Access-Control-Allow-Headers': 'Content-Type',
-            }
-        });
-
-        console.log(token)
+        })
 
         const access_token = response.data.access_token;
         res.json({ access_token })
