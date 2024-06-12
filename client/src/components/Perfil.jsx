@@ -38,10 +38,15 @@ const Perfil = () => {
         userData()
     }, [username])
 
-    const handleMercadoPago = () => {
-        window.location.href = `https://matesito-production.up.railway.app/mp/callback?token=${accessToken}`;
+    const handleMercadoPago = async () => {
+        try {
+            const url = `https://matesito-production.up.railway.app/mp/callback?token=${accessToken}`;
+            window.location.href = url;
+        } catch (error) {
+            console.log(error);
+        }
     };
-
+    
     if (loading) return <div>Loading...</div>;
 
     if (!profileData) return <div>Usuario no encontrado</div>;
