@@ -9,7 +9,6 @@ import { useEffect, useState } from 'react'
 import { profileRequest } from '../auth/axiosAPI.js'
 import { useParams } from 'react-router-dom'
 import { useUser } from '../context/UserContext.jsx'
-import axios from 'axios'
 
 const Perfil = () => {
 
@@ -19,6 +18,11 @@ const Perfil = () => {
     const [matesitos, setMatesitos] = useState('1')
     const { accessToken, user } = useUser()
     const userFound = user ? user.user : null
+
+    useEffect(() => {
+        console.log("Access Token:", accessToken);
+    }, [accessToken]);
+
 
     useEffect(() => {
         const userData = async () => {
@@ -35,9 +39,8 @@ const Perfil = () => {
     }, [username])
 
     const handleMercadoPago = () => {
-        const token = "tu_token_aqui";
-        window.location.href = `https://matesito-production.up.railway.app/mp/callback?token=${token}`;
-    };    
+        window.location.href = `https://matesito-production.up.railway.app/mp/callback?token=${accessToken}`;
+    };
 
     if (loading) return <div>Loading...</div>;
 
