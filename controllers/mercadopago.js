@@ -26,6 +26,8 @@ const cuentaMercadoPago = async (req, res) => {
             redirect_uri: REDIRECT_URI
         })
 
+        const access_token = response.data.access_token;
+
         await User.findByIdAndUpdate(token, { mercadoPagoAccessToken: access_token });
 
         if (access_token)
