@@ -10,13 +10,15 @@ const REDIRECT_URI = process.env.MERCADOPAGO_REDIRECT_URI
 
 const cuentaMercadoPago = async (req, res) => {
     try {
-        const { code, token: userId } = req.query;
-        console.log(userId)
+        const { code, state } = req.query;
 
         if (!code) {
-            const authURL = `https://auth.mercadopago.com.ar/authorization?client_id=${CLIENT_ID}&response_type=code&platform_id=mp&state=${CLIENT_SECRET}&redirect_url=${REDIRECT_URI}`;
-            return res.redirect(authURL)
+            const userId = req.query.token; // Assuming you get the userId from the token query param
+            const authURL = `https://auth.mercadopago.com.ar/authorization?client_id=${CLIENT_ID}&response_type=code&platform_id=mp&state=${userId}&redirect_uri=${REDIRECT_URI}`;
+            return res.redirect(authURL);
         }
+
+        const userId = state; // Get the userId from the state parameter
 
         const response = await axios.post('https://api.mercadopago.com/oauth/token', new URLSearchParams({
             grant_type: 'authorization_code',
@@ -32,16 +34,16 @@ const cuentaMercadoPago = async (req, res) => {
 
         const access_token = response.data.access_token;
         console.log(`Received access_token: ${access_token}`);
+        console.log(`Received userId: ${userId}`);
 
         // Actualiza el usuario con el token de acceso de MercadoPago
         const updateResult = await User.findByIdAndUpdate(userId, { mercadoPagoAccessToken: access_token });
         console.log(`Update result: ${updateResult}`);
 
-        if (updateResult){
+        if (updateResult) {
             return res.redirect('http://localhost:5173/perfil');
-        }
-        else{
-            res.json({message: 'No se pudo añadir tu access token.'})
+        } else {
+            res.json({ message: 'No se pudo añadir tu access token.' });
         }
 
     } catch (error) {
