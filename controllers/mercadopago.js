@@ -94,11 +94,11 @@ export const checkoutMercadoPago = async (req, res) => {
 }
 
 export const successMP = (req, res) => {
-    res.render('successMP')
+    res.send('successMP')
 }
 
 export const cancelMP = (req, res) => {
-    res.render('cancelMP')
+    res.send('cancelMP')
 }
 
 export default cuentaMercadoPago;
