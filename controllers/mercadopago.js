@@ -13,12 +13,12 @@ const cuentaMercadoPago = async (req, res) => {
         const { code, state } = req.query;
 
         if (!code) {
-            const userId = req.query.token; // Assuming you get the userId from the token query param
+            const userId = req.query.token;
             const authURL = `https://auth.mercadopago.com.ar/authorization?client_id=${CLIENT_ID}&response_type=code&platform_id=mp&state=${userId}&redirect_uri=${REDIRECT_URI}`;
             return res.redirect(authURL);
         }
 
-        const userId = state; // Get the userId from the state parameter
+        const userId = state;
 
         const response = await axios.post('https://api.mercadopago.com/oauth/token', new URLSearchParams({
             grant_type: 'authorization_code',
@@ -33,12 +33,8 @@ const cuentaMercadoPago = async (req, res) => {
         });
 
         const access_token = response.data.access_token;
-        console.log(`Received access_token: ${access_token}`);
-        console.log(`Received userId: ${userId}`);
 
-        // Actualiza el usuario con el token de acceso de MercadoPago
         const updateResult = await User.findByIdAndUpdate(userId, { mercadopagoAccessToken: access_token });
-        console.log(`Update result: ${updateResult}`);
 
         if (updateResult) { 
             return res.redirect('http://localhost:5173/perfil');
@@ -54,7 +50,17 @@ const cuentaMercadoPago = async (req, res) => {
 
 export const checkoutMercadoPago = async (req, res) => {
     try {
-        const mercadopagoClient = new MercadoPagoConfig({
+
+        const userId = req.user.id;
+        console.log(userId)
+
+        const user = await User.findById(userId);
+
+        if (!user || !user.mercadopagoAccessToken) {
+            return res.status(400).json({ message: 'Usuario no encontrado o no tiene un access token de MercadoPago' });
+        }
+
+        /*const mercadopagoClient = new MercadoPagoConfig({
             accessToken: 's'
         });
 
@@ -78,7 +84,7 @@ export const checkoutMercadoPago = async (req, res) => {
 
         const preference = new Preference(mercadopagoClient);
         const result = await preference.create({ body });
-        return res.status(200).json(result.init_point);
+        return res.status(200).json(result.init_point);*/
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
