@@ -79,8 +79,8 @@ export const checkoutMercadoPago = async (req, res) => {
         const body = {
             items: lineItems,
             back_urls: {
-                success: ``,
-                failure: ``,
+                success: 'https://matesito-production.up.railway.app/mp/success',
+                failure: 'https://matesito-production.up.railway.app/mp/cancel',
             },
             auto_return: "approved"
         }
