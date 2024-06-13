@@ -67,12 +67,14 @@ export const checkoutMercadoPago = async (req, res) => {
         const { qty, amount } = req.body
         console.log(qty, amount)
 
-        const lineItems = {
-            title: qty === 1 ? 'Matesito' : 'Matesitos',
-            unit_price: amount,
-            quantity: qty,
-            currency_id: 'ARS',
-        }
+        const lineItems = [
+            {
+                title: qty === 1 ? 'Matesito' : 'Matesitos',
+                unit_price: amount,
+                quantity: qty,
+                currency_id: 'ARS',
+            }
+        ]
 
         const body = {
             items: lineItems,

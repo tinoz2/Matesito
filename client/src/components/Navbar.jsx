@@ -6,9 +6,16 @@ const Navbar = () => {
 
     const { user, logout } = useUser()
 
+    const qty = 2
+    const amount = 200
+
     const checkout = async () => {
         try {
-            await checkoutMercadoPagoRequest()
+            const res = await checkoutMercadoPagoRequest({
+                qty,
+                amount
+            })
+            console.log(res)
         } catch (error) {
             console.log(error)
         }

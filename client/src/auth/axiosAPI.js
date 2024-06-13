@@ -28,6 +28,6 @@ export const connectMercadoPagoRequest = () => {
     return instance.post('/mp/callback');
 }
 
-export const checkoutMercadoPagoRequest = () => {
-    return instance.post('/mp/checkout');
+export const checkoutMercadoPagoRequest = (data) => {
+    return instance.post('/mp/checkout', data);
 }
