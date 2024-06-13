@@ -36,7 +36,7 @@ const cuentaMercadoPago = async (req, res) => {
 
         const updateResult = await User.findByIdAndUpdate(userId, { mercadopagoAccessToken: access_token });
 
-        if (updateResult) { 
+        if (updateResult) {
             return res.redirect('http://localhost:5173/perfil');
         } else {
             res.json({ message: 'No se pudo añadir tu access token.' });
@@ -60,18 +60,19 @@ export const checkoutMercadoPago = async (req, res) => {
             return res.status(400).json({ message: 'Usuario no encontrado o no tiene un access token de MercadoPago' });
         }
 
-        /*const mercadopagoClient = new MercadoPagoConfig({
-            accessToken: 's'
+        const mercadopagoClient = new MercadoPagoConfig({
+            accessToken: user.mercadopagoAccessToken
         });
 
-        const { cart } = req.body
+        const { qty, amount } = req.body
+        console.log(qty, amount)
 
-        const lineItems = cart.map(item => ({
-            title: item.title,
-            unit_price: item.amount,
-            quantity: item.qty,
+        const lineItems = {
+            title: qty === 1 ? 'Matesito' : 'Matesitos',
+            unit_price: amount,
+            quantity: qty,
             currency_id: 'ARS',
-        }))
+        }
 
         const body = {
             items: lineItems,
@@ -84,7 +85,7 @@ export const checkoutMercadoPago = async (req, res) => {
 
         const preference = new Preference(mercadopagoClient);
         const result = await preference.create({ body });
-        return res.status(200).json(result.init_point);*/
+        return res.status(200).json(result.init_point);
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
