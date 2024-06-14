@@ -52,7 +52,6 @@ export const checkoutMercadoPago = async (req, res) => {
     try {
 
         const userId = req.user.id;
-        console.log(userId)
 
         const user = await User.findById(userId);
 
@@ -65,7 +64,6 @@ export const checkoutMercadoPago = async (req, res) => {
         });
 
         const { qty, amount } = req.body
-        console.log(qty, amount)
 
         const lineItems = [
             {
@@ -88,6 +86,23 @@ export const checkoutMercadoPago = async (req, res) => {
         const preference = new Preference(mercadopagoClient);
         const result = await preference.create({ body });
         return res.status(200).json(result.init_point);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+}
+
+export const token = async (req, res) => {
+    try {
+        const userId = req.user.id
+        const user = await User.findById(userId)
+
+        if (!user || !user.mercadopagoAccessToken) {
+            return res.status(400).json({ message: 'Usuario no encontrado o no tiene un access token de MercadoPago' });
+        }
+
+        const token = user?.mercadopagoAccessToken
+
+        res.json({ token })
     } catch (error) {
         res.status(500).json({ message: error.message });
     }

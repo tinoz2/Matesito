@@ -6,7 +6,7 @@ import yt from '/yt.svg'
 import logo from '/icon.png'
 import mp from '/mp.png'
 import { useEffect, useState } from 'react'
-import { profileRequest } from '../auth/axiosAPI.js'
+import { accessTokenRequest, checkoutMercadoPagoRequest, profileRequest } from '../auth/axiosAPI.js'
 import { useParams } from 'react-router-dom'
 import { useUser } from '../context/UserContext.jsx'
 
@@ -15,7 +15,7 @@ const Perfil = () => {
     const { username } = useParams()
     const [profileData, setProfileData] = useState(null)
     const [loading, setLoading] = useState(true)
-    const [matesitos, setMatesitos] = useState('1')
+    const [matesitos, setMatesitos] = useState(1)
     const { accessToken, user } = useUser()
     const userFound = user ? user.user : null
 
@@ -45,33 +45,55 @@ const Perfil = () => {
             console.log(error);
         }
     };
-    
+
     if (loading) return <div>Loading...</div>;
 
     if (!profileData) return <div>Usuario no encontrado</div>;
 
     const handleMatesitosChange = (value) => {
         if (value < 1) {
-            setMatesitos('1')
+            setMatesitos(1);
         } else if (value > 99) {
-            setMatesitos('99')
+            setMatesitos(99);
         } else {
-            setMatesitos(value.toString())
+            setMatesitos(value);
         }
-    }
+    };
 
     const handleInputChange = (event) => {
-        let value = event.target.value
-        if (parseInt(value) > 99) {
-            value = '99'
+        let value = parseInt(event.target.value, 10);
+        if (isNaN(value) || value < 1) {
+            value = 1;
+        } else if (value > 99) {
+            value = 99;
         }
-        if (parseInt(value) < 1 || value === '') {
-            value = '1'
+        setMatesitos(value);
+    };
+
+    const checkout = async () => {
+        try {
+            const res = await checkoutMercadoPagoRequest({
+                qty: matesitos,
+                amount: matesitos * 100
+            })
+            window.location.href = res.data
+        } catch (error) {
+            console.log(error)
         }
-        setMatesitos(value)
     }
 
-    const mp = false
+    useEffect(() => {
+        const fetchToken = async () => {
+            try {
+                const res = await accessTokenRequest()
+                console.log(res)
+            } catch (error) {
+                console.log(error)
+            }
+        }
+        fetchToken()
+    }, [])
+
 
     return (
         <section className="relative bg-white">
@@ -156,12 +178,12 @@ const Perfil = () => {
                                 <hr className='hr-3 w-1/6' />
                             </div>
                             <div className='flex justify-center items-center flex-col'>
-                                <button className='p-2 rounded-lg text-white font-semibold w-full bg-secondary'>{matesitos * 100} ARS</button>
+                                <button onClick={checkout} className='p-2 rounded-lg text-white font-semibold w-full bg-secondary'>{matesitos * 100} ARS</button>
                                 <img src={mp} className='mt-4 w-1/3' alt="" />
                             </div>
                         </div>
                             :
-                            <button onClick={handleMercadoPago}>Enlazar Mercado Pago</button>
+                            <p>Esta persona no tiene conectado su Mercado Pago.</p>
                     }
                 </div>
             </div>

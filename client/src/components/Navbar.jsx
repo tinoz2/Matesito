@@ -1,25 +1,9 @@
 import icon from '/icon.png'
 import { useUser } from '../context/UserContext.jsx'
-import { checkoutMercadoPagoRequest } from '../auth/axiosAPI.js'
 
 const Navbar = () => {
 
     const { user, logout } = useUser()
-
-    const qty = 2
-    const amount = 200
-
-    const checkout = async () => {
-        try {
-            const res = await checkoutMercadoPagoRequest({
-                qty,
-                amount
-            })
-            console.log(res)
-        } catch (error) {
-            console.log(error)
-        }
-    }
 
     return (
         <div className="navbar bg-main max-w-7xl m-auto lg:rounded-full lg:mt-12 lg:px-12">
@@ -53,7 +37,6 @@ const Navbar = () => {
                 }
             </div>
             <button onClick={logout}>Logout</button>
-            <button onClick={checkout}>Checkout</button>
         </div>
     )
 }

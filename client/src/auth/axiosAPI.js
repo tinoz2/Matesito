@@ -31,3 +31,7 @@ export const connectMercadoPagoRequest = () => {
 export const checkoutMercadoPagoRequest = (data) => {
     return instance.post('/mp/checkout', data);
 }
+
+export const accessTokenRequest = () => {
+    return instance.get('/mp/token')
+}
