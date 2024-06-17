@@ -16,7 +16,6 @@ const Perfil = () => {
     const [profileData, setProfileData] = useState(null)
     const [loading, setLoading] = useState(true)
     const [matesitos, setMatesitos] = useState(1)
-    const [tokens, setTokens] = useState(null)
     const { user, userId } = useUser()
     const userFound = user ? user.user : null
 
@@ -28,7 +27,6 @@ const Perfil = () => {
         const userData = async () => {
             try {
                 const res = await profileRequest(username)
-                console.log(res.data)
                 setProfileData(res.data)
             } catch (error) {
                 console.log(error)
@@ -72,7 +70,8 @@ const Perfil = () => {
         try {
             const res = await checkoutMercadoPagoRequest({
                 qty: matesitos,
-                amount: matesitos * 100
+                amount: matesitos * 100,
+                token: profileData.mercadopagoAccessToken
             })
             window.location.href = res.data
         } catch (error) {
@@ -144,7 +143,7 @@ const Perfil = () => {
                         </div>
                     </div>
                     {
-                        mercadoPagoAccessToken ? <div className='border p-4 rounded-lg space-y-4 h-full'>
+                        profileData.mercadopagoAccessToken ? <div className='border p-4 rounded-lg space-y-4 h-full'>
                             <div className='flex items-center border border-third p-4 rounded-lg space-x-3'>
                                 <img src={logo} className='w-16 h-16' alt="" />
                                 <span>x</span>
