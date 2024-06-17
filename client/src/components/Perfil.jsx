@@ -16,13 +16,13 @@ const Perfil = () => {
     const [profileData, setProfileData] = useState(null)
     const [loading, setLoading] = useState(true)
     const [matesitos, setMatesitos] = useState(1)
+    const [token, setToken] = useState(null)
     const { accessToken, user } = useUser()
     const userFound = user ? user.user : null
 
     useEffect(() => {
         console.log("Access Token:", accessToken);
     }, [accessToken]);
-
 
     useEffect(() => {
         const userData = async () => {
@@ -38,17 +38,26 @@ const Perfil = () => {
         userData()
     }, [username])
 
+    useEffect(() => {
+        const fetchToken = async () => {
+            try {
+                const res = await accessTokenRequest()
+                setToken(res.data.token)
+            } catch (error) {
+                console.log(error)
+            }
+        }
+        fetchToken()
+    }, [])
+
     const handleMercadoPago = async () => {
         try {
+            /* Conectar Mercado Pago (settings) */
             window.location.href = `https://matesito-production.up.railway.app/mp/callback?token=${accessToken}`;
         } catch (error) {
             console.log(error);
         }
     };
-
-    if (loading) return <div>Loading...</div>;
-
-    if (!profileData) return <div>Usuario no encontrado</div>;
 
     const handleMatesitosChange = (value) => {
         if (value < 1) {
@@ -82,17 +91,9 @@ const Perfil = () => {
         }
     }
 
-    useEffect(() => {
-        const fetchToken = async () => {
-            try {
-                const res = await accessTokenRequest()
-                console.log(res)
-            } catch (error) {
-                console.log(error)
-            }
-        }
-        fetchToken()
-    }, [])
+    if (loading) return <div>Loading...</div>;
+
+    if (!profileData) return <div>Usuario no encontrado</div>;
 
 
     return (
@@ -155,7 +156,7 @@ const Perfil = () => {
                         </div>
                     </div>
                     {
-                        mp ? <div className='border p-4 rounded-lg space-y-4 h-full'>
+                        token ? <div className='border p-4 rounded-lg space-y-4 h-full'>
                             <div className='flex items-center border border-third p-4 rounded-lg space-x-3'>
                                 <img src={logo} className='w-16 h-16' alt="" />
                                 <span>x</span>

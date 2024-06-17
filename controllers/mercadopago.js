@@ -93,8 +93,7 @@ export const checkoutMercadoPago = async (req, res) => {
 
 export const token = async (req, res) => {
     try {
-        const userId = req.user.id
-        const user = await User.findById(userId)
+        const user = await User.find()
 
         if (!user || !user.mercadopagoAccessToken) {
             return res.status(400).json({ message: 'Usuario no encontrado o no tiene un access token de MercadoPago' });
