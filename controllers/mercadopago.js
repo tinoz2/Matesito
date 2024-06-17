@@ -93,16 +93,14 @@ export const checkoutMercadoPago = async (req, res) => {
 
 export const token = async (req, res) => {
     try {
-        const user = await User.find()
-        console.log(user)
+        const users = await User.find({ mercadopagoAccessToken: { $exists: true, $ne: null } });
+        console.log(users)
 
-        if (!user || !user.mercadopagoAccessToken) {
-            return res.status(400).json({ message: 'Usuario no encontrado o no tiene un access token de MercadoPago' });
+        if (!users || users.length === 0) {
+            return res.status(400).json({ message: 'No se encontraron usuarios con un access token de MercadoPago' });
         }
 
-        const token = user?.mercadopagoAccessToken
-
-        res.json({ token })
+        res.json({ tokens: users.map(user => user.mercadopagoAccessToken) });
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
