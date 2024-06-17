@@ -124,6 +124,7 @@ export const logged = async (req, res) => {
             email: userFound.email,
             createdAt: userFound.createdAt,
             updatedAt: userFound.updatedAt,
+            mercadopagoAccessToken: userFound.mercadopagoAccessToken
         })
     } catch (error) {
         res.status(500).json({ message: error.message })

@@ -6,7 +6,7 @@ import yt from '/yt.svg'
 import logo from '/icon.png'
 import mp from '/mp.png'
 import { useEffect, useState } from 'react'
-import { accessTokenRequest, checkoutMercadoPagoRequest, profileRequest } from '../auth/axiosAPI.js'
+import { checkoutMercadoPagoRequest, profileRequest } from '../auth/axiosAPI.js'
 import { useParams } from 'react-router-dom'
 import { useUser } from '../context/UserContext.jsx'
 
@@ -16,18 +16,19 @@ const Perfil = () => {
     const [profileData, setProfileData] = useState(null)
     const [loading, setLoading] = useState(true)
     const [matesitos, setMatesitos] = useState(1)
-    const [token, setToken] = useState(null)
-    const { accessToken, user } = useUser()
+    const [tokens, setTokens] = useState(null)
+    const { user, userId } = useUser()
     const userFound = user ? user.user : null
 
     useEffect(() => {
-        console.log("Access Token:", accessToken);
-    }, [accessToken]);
+        console.log("user id:", userId);
+    }, [userId]);
 
     useEffect(() => {
         const userData = async () => {
             try {
                 const res = await profileRequest(username)
+                console.log(res.data)
                 setProfileData(res.data)
             } catch (error) {
                 console.log(error)
@@ -38,23 +39,10 @@ const Perfil = () => {
         userData()
     }, [username])
 
-    useEffect(() => {
-        const fetchToken = async () => {
-            try {
-                const res = await accessTokenRequest()
-                console.log(res.data)
-                setToken(res.data.token)
-            } catch (error) {
-                console.log(error)
-            }
-        }
-        fetchToken()
-    }, [])
-
     const handleMercadoPago = async () => {
         try {
             /* Conectar Mercado Pago (settings) */
-            window.location.href = `https://matesito-production.up.railway.app/mp/callback?token=${accessToken}`;
+            window.location.href = `https://matesito-production.up.railway.app/mp/callback?token=${userId}`;
         } catch (error) {
             console.log(error);
         }
@@ -95,7 +83,6 @@ const Perfil = () => {
     if (loading) return <div>Loading...</div>;
 
     if (!profileData) return <div>Usuario no encontrado</div>;
-
 
     return (
         <section className="relative bg-white">
@@ -157,7 +144,7 @@ const Perfil = () => {
                         </div>
                     </div>
                     {
-                        token ? <div className='border p-4 rounded-lg space-y-4 h-full'>
+                        mercadoPagoAccessToken ? <div className='border p-4 rounded-lg space-y-4 h-full'>
                             <div className='flex items-center border border-third p-4 rounded-lg space-x-3'>
                                 <img src={logo} className='w-16 h-16' alt="" />
                                 <span>x</span>

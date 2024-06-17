@@ -8,15 +8,15 @@ export const useUser = () => useContext(UserContext);
 export const UserProvider = ({ children }) => {
 
     const [user, setUser] = useState(null);
-    const [accessToken, setAccessToken] = useState('');
+    const [userId, setUserId] = useState('');
 
     const fetchUser = useCallback(async () => {
         try {
             const res = await loggedRequest();
             setUser(res.data);
             if (res.data) {
-                const token = res.data.id;
-                setAccessToken(token);
+                const id = res.data.id;
+                setUserId(id);
             }
         } catch (error) {
             console.log(error);
@@ -40,8 +40,8 @@ export const UserProvider = ({ children }) => {
         user,
         setUser,
         logout,
-        accessToken,
-    }), [user, logout, accessToken]);
+        userId
+    }), [user, logout, userId]);
 
     return (
         <UserContext.Provider value={contextValue}>
