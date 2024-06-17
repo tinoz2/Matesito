@@ -42,6 +42,7 @@ const Perfil = () => {
         const fetchToken = async () => {
             try {
                 const res = await accessTokenRequest()
+                console.log(res.data)
                 setToken(res.data.token)
             } catch (error) {
                 console.log(error)
