@@ -31,6 +31,7 @@ export const UserProvider = ({ children }) => {
         try {
             await logoutRequest();
             setUser(null);
+            document.cookie = "mercadopago=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
         } catch (error) {
             console.log(error);
         }

@@ -11,6 +11,7 @@ const REDIRECT_URI = process.env.MERCADOPAGO_REDIRECT_URI
 const cuentaMercadoPago = async (req, res) => {
     try {
         const { code, state } = req.query;
+        console.log(code, state)
 
         if (!code) {
             const userId = req.query.token;
@@ -52,7 +53,6 @@ export const checkoutMercadoPago = async (req, res) => {
     try {
 
         const { qty, amount, token } = req.body
-        console.log(token)
 
         if(!token){
             return res.status(500).json({message: 'AccessToken no encontrado'})
