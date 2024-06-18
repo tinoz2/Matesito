@@ -61,6 +61,8 @@ export const checkoutMercadoPago = async (req, res) => {
             accessToken: token
         });
 
+        console.log('first')
+
         const lineItems = [
             {
                 title: 'Matesitos',
