@@ -34,7 +34,9 @@ const cuentaMercadoPago = async (req, res) => {
 
         const access_token = response.data.access_token;
 
-        const updateResult = await User.findByIdAndUpdate(userId, { mercadopagoAccessToken: access_token });
+        const updateResult = await User.findByIdAndUpdate(userId, {
+            $push: { mercadopagoAccessTokens: access_token }
+        });
 
         if (updateResult) {
             return res.redirect('http://localhost:5173/perfil');
@@ -53,8 +55,8 @@ export const checkoutMercadoPago = async (req, res) => {
 
         const { qty, amount, token } = req.body
 
-        if(!token){
-            return res.status(500).json({message: 'AccessToken no encontrado'})
+        if (!token) {
+            return res.status(500).json({ message: 'AccessToken no encontrado' })
         }
 
         const mercadopagoClient = new MercadoPagoConfig({
