@@ -37,7 +37,7 @@ const cuentaMercadoPago = async (req, res) => {
         const updateResult = await User.findByIdAndUpdate(userId, { mercadopagoAccessToken: access_token });
 
         if (updateResult) {
-            return res.redirect('http://localhost:5173/perfil');
+            return res.redirect('https://matesito.netlify.app/perfil');
         } else {
             res.json({ message: 'No se pudo añadir tu access token.' });
         }
