@@ -14,11 +14,18 @@ const cuentaMercadoPago = async (req, res) => {
 
         if (!code) {
             const userId = req.query.token;
+            if (!userId) {
+                return res.status(400).json({ message: 'Falta el token de usuario.' });
+            }
+
             const authURL = `https://auth.mercadopago.com.ar/authorization?client_id=${CLIENT_ID}&response_type=code&platform_id=mp&state=${userId}&redirect_uri=${REDIRECT_URI}`;
             return res.redirect(authURL);
         }
 
         const userId = state;
+        if (!userId) {
+            return res.status(400).json({ message: 'Falta el ID de usuario en el estado.' });
+        }
 
         const response = await axios.post('https://api.mercadopago.com/oauth/token', new URLSearchParams({
             grant_type: 'authorization_code',
@@ -33,6 +40,10 @@ const cuentaMercadoPago = async (req, res) => {
         });
 
         const access_token = response.data.access_token;
+
+        if (!mongoose.Types.ObjectId.isValid(userId)) {
+            return res.status(400).json({ message: 'El ID de usuario no es válido.' });
+        }
 
         const updateResult = await User.findByIdAndUpdate(userId, {
             $push: { mercadopagoAccessTokens: access_token }
