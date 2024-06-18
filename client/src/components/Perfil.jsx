@@ -40,7 +40,7 @@ const Perfil = () => {
     const handleMercadoPago = async () => {
         try {
             /* Conectar Mercado Pago (settings) */
-            window.location.href = `https://matesito-production.up.railway.app/mp/callback?token=${userId}`;
+            window.location.href = `https://matesito-production.up.railway.app/mp/callback`;
         } catch (error) {
             console.log(error);
         }

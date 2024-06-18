@@ -11,7 +11,6 @@ const REDIRECT_URI = process.env.MERCADOPAGO_REDIRECT_URI
 const cuentaMercadoPago = async (req, res) => {
     try {
         const { code, state } = req.query;
-        console.log(code, state)
 
         if (!code) {
             const userId = req.query.token;
