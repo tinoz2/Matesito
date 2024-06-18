@@ -70,7 +70,7 @@ export const checkoutMercadoPago = async (req, res) => {
         const lineItems = [
             {
                 title: qty === 1 ? 'Matesito' : 'Matesitos',
-                unit_price: amount,
+                unit_price: unitPrice,
                 quantity: qty,
                 currency_id: 'ARS',
             }
