@@ -25,7 +25,7 @@ const userSchema = new mongoose.Schema({
     banner: {
         type: String
     },
-    mercadopagoAccessTokens: [{ type: String }],
+    mercadopagoAccessToken: { type: String, default: null },
 
 }, { timestamps: true })
 

@@ -2,7 +2,6 @@ import dotenv from 'dotenv';
 import axios from 'axios';
 import { MercadoPagoConfig, Preference } from 'mercadopago';
 import User from '../schemas/User.js'
-import mongoose from 'mongoose';
 dotenv.config();
 
 const CLIENT_ID = process.env.MERCADOPAGO_CLIENT_ID
@@ -15,18 +14,11 @@ const cuentaMercadoPago = async (req, res) => {
 
         if (!code) {
             const userId = req.query.token;
-            if (!userId) {
-                return res.status(400).json({ message: 'Falta el token de usuario.' });
-            }
-
             const authURL = `https://auth.mercadopago.com.ar/authorization?client_id=${CLIENT_ID}&response_type=code&platform_id=mp&state=${userId}&redirect_uri=${REDIRECT_URI}`;
             return res.redirect(authURL);
         }
 
         const userId = state;
-        if (!userId) {
-            return res.status(400).json({ message: 'Falta el ID de usuario en el estado.' });
-        }
 
         const response = await axios.post('https://api.mercadopago.com/oauth/token', new URLSearchParams({
             grant_type: 'authorization_code',
@@ -42,13 +34,7 @@ const cuentaMercadoPago = async (req, res) => {
 
         const access_token = response.data.access_token;
 
-        if (!mongoose.Types.ObjectId.isValid(userId)) {
-            return res.status(400).json({ message: 'El ID de usuario no es válido.' });
-        }
-
-        const updateResult = await User.findByIdAndUpdate(userId, {
-            $push: { mercadopagoAccessTokens: access_token }
-        });
+        const updateResult = await User.findByIdAndUpdate(userId, { mercadopagoAccessToken: access_token });
 
         if (updateResult) {
             return res.redirect('http://localhost:5173/perfil');
@@ -67,8 +53,8 @@ export const checkoutMercadoPago = async (req, res) => {
 
         const { qty, amount, token } = req.body
 
-        if (!token) {
-            return res.status(500).json({ message: 'AccessToken no encontrado' })
+        if(!token){
+            return res.status(500).json({message: 'AccessToken no encontrado'})
         }
 
         const mercadopagoClient = new MercadoPagoConfig({
