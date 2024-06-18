@@ -61,16 +61,12 @@ export const checkoutMercadoPago = async (req, res) => {
             accessToken: token
         });
 
-        const unitPrice = 100;
-        const amount = qty * unitPrice
-
-        console.log(amount)
         console.log(qty)
 
         const lineItems = [
             {
-                title: qty === 1 ? 'Matesito' : 'Matesitos',
-                unit_price: unitPrice,
+                title: 'Matesitos',
+                unit_price: qty * 100,
                 quantity: qty,
                 currency_id: 'ARS',
             }
