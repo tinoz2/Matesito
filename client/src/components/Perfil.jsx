@@ -72,7 +72,6 @@ const Perfil = () => {
         try {
             const res = await checkoutMercadoPagoRequest({
                 qty: matesitos,
-                amount: matesitos * 100,
                 token: profileData.mercadopagoAccessToken
             })
             window.location.href = res.data
