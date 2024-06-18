@@ -2,6 +2,7 @@ import dotenv from 'dotenv';
 import axios from 'axios';
 import { MercadoPagoConfig, Preference } from 'mercadopago';
 import User from '../schemas/User.js'
+import mongoose from 'mongoose';
 dotenv.config();
 
 const CLIENT_ID = process.env.MERCADOPAGO_CLIENT_ID

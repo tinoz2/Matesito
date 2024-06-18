@@ -37,6 +37,8 @@ const Perfil = () => {
         userData()
     }, [username])
 
+
+    console.log(userId)
     const handleMercadoPago = async () => {
         try {
             /* Conectar Mercado Pago (settings) */
