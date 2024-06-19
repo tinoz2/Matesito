@@ -172,7 +172,7 @@ const Perfil = () => {
                             </div>
                         </div>
                             :
-                            <button onClick={handleMercadoPago}>asd</button>
+                            <p>Este usuario no tiene Mercado Pago conectado.</p>
                     }
                 </div>
             </div>
