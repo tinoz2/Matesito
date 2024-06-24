@@ -5,6 +5,12 @@ import User from '../schemas/User.js'
 export const register = async (req, res) => {
     try {
         const { user, email, password, topic } = req.body
+
+        const existingUser = await User.findOne({ $or: [{ user }, { email }] });
+        if (existingUser) {
+            return res.status(400).json({ message: 'Usuario o correo ya existe' });
+        }
+
         const hashPassword = await bcrypt.hash(password, 10)
         const newUser = await User.create({ user, email, topic, password: hashPassword })
         jwt.sign({
