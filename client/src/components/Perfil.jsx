@@ -7,7 +7,7 @@ import logo from '/icon.png'
 import mp from '/mp.png'
 import { useEffect, useState } from 'react'
 import { checkoutMercadoPagoRequest, profileRequest } from '../auth/axiosAPI.js'
-import { useParams } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import { useUser } from '../context/UserContext.jsx'
 
 const Perfil = () => {
@@ -16,12 +16,7 @@ const Perfil = () => {
     const [profileData, setProfileData] = useState(null)
     const [loading, setLoading] = useState(true)
     const [matesitos, setMatesitos] = useState(1)
-    const { user, userId } = useUser()
-    const userFound = user ? user.user : null
-
-    useEffect(() => {
-        console.log("user id:", userId);
-    }, [userId]);
+    const { user, userId, userLoading } = useUser()
 
     useEffect(() => {
         const userData = async () => {
@@ -36,17 +31,6 @@ const Perfil = () => {
         }
         userData()
     }, [username])
-
-
-    console.log(userId)
-    const handleMercadoPago = async () => {
-        try {
-            /* Conectar Mercado Pago (settings) */
-            window.location.href = `https://matesito-production.up.railway.app/mp/callback?token=${userId}`;
-        } catch (error) {
-            console.log(error);
-        }
-    };
 
     const handleMatesitosChange = (value) => {
         if (value < 1) {
@@ -80,7 +64,7 @@ const Perfil = () => {
         }
     }
 
-    if (loading) return <div>Loading...</div>;
+    if (loading || userLoading) return <div>Loading...</div>;
 
     if (!profileData) return <div>Usuario no encontrado</div>;
 
@@ -95,16 +79,25 @@ const Perfil = () => {
 
             <div className="absolute top-52 left-1/2 transform -translate-x-1/2 translate-y-1/12">
                 <img src={icon} className='w-40 rounded-full border-4' alt="" />
-            </div>
+            </div>  
             <div className='mt-24 flex justify-center flex-col items-center'>
-                <h2 className='text-3xl font-semibold'>{profileData.user}</h2>
+                <div className='flex items-center'>
+                    <h2 className='text-3xl font-semibold'>{profileData.user}</h2>
+                </div>
                 <a href="" className='text-secondary my-2'>https://www.youtube.com/watch?v=EzTUkHfCtjA&t=63s</a>
                 <span className='text-fourth text-lg'>387 recibidos</span>
             </div>
             <div className='mt-6'>
                 <hr className='hr-2' />
             </div>
-            <div className="max-w-5xl m-auto py-12">
+
+            <div className="max-w-5xl m-auto mt-4">
+                {
+                    userId === profileData.id ? <Link className='flex justify-center items-center my-4 font-semibold text-lg' to='./settings'>Editar perfil <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-5 ml-2">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L6.832 19.82a4.5 4.5 0 0 1-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 0 1 1.13-1.897L16.863 4.487Zm0 0L19.5 7.125" />
+                    </svg>
+                    </Link> : null
+                }
                 <div className='border p-4 rounded-lg flex flex-col justify-center items-center'>
                     <p>Oye 👋 Acabo de crear una página aquí. ¡Ahora puedo recibir pagos globales!</p>
                     <div className='flex items-center space-x-4 mt-3'>

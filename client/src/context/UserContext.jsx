@@ -6,9 +6,9 @@ const UserContext = createContext();
 export const useUser = () => useContext(UserContext);
 
 export const UserProvider = ({ children }) => {
-
     const [user, setUser] = useState(null);
     const [userId, setUserId] = useState('');
+    const [userLoading, setUserLoading] = useState(true);
 
     const fetchUser = useCallback(async () => {
         try {
@@ -20,6 +20,8 @@ export const UserProvider = ({ children }) => {
             }
         } catch (error) {
             console.log(error);
+        } finally {
+            setUserLoading(false);
         }
     }, []);
 
@@ -31,6 +33,8 @@ export const UserProvider = ({ children }) => {
         try {
             await logoutRequest();
             setUser(null);
+            setUserId('');
+            setUserLoading(true);
             document.cookie = "mercadopago=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
         } catch (error) {
             console.log(error);
@@ -41,8 +45,9 @@ export const UserProvider = ({ children }) => {
         user,
         setUser,
         logout,
-        userId
-    }), [user, logout, userId]);
+        userId,
+        userLoading
+    }), [user, logout, userId, userLoading]);
 
     return (
         <UserContext.Provider value={contextValue}>

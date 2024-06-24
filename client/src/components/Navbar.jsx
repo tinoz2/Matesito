@@ -3,7 +3,7 @@ import { useUser } from '../context/UserContext.jsx'
 
 const Navbar = () => {
 
-    const { user, logout } = useUser()
+    const { user } = useUser()
 
     return (
         <div className="navbar bg-main max-w-7xl m-auto lg:rounded-full lg:mt-12 lg:px-12">
@@ -36,7 +36,6 @@ const Navbar = () => {
                             className="btn rounded-full bg-secondary text-white border-none hover:bg-blue-700 transition">Login</a>
                 }
             </div>
-            <button onClick={logout}>Logout</button>
         </div>
     )
 }

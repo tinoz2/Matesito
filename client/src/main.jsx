@@ -9,6 +9,9 @@ import ExplorarCreadores from './components/ExplorarCreadores'
 import Perfil from './components/Perfil'
 import CrearCuenta from './components/CrearCuenta'
 import { UserProvider } from './context/UserContext'
+import PrivateRoute from './components/PrivateRoute';
+import SettingsRoute from './components/SettingsRoute';
+import Settings from './components/Settings'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <UserProvider>
@@ -19,6 +22,16 @@ ReactDOM.createRoot(document.getElementById('root')).render(
         <Route path='/perfil' element={<ExplorarCreadores />} />
         <Route path='/perfil/:username' element={<Perfil />} />
         <Route path='/crearcuenta' element={<CrearCuenta />} />
+        <Route
+          path='/perfil/:username/settings'
+          element={
+            <PrivateRoute>
+              <SettingsRoute>
+                <Settings />
+              </SettingsRoute>
+            </PrivateRoute>
+          }
+        />
       </Routes>
       <Footer />
     </BrowserRouter>
