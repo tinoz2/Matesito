@@ -18,17 +18,16 @@ import { useState } from 'react';
 
 function Copyright() {
     return (
-        <Typography variant="body2" color="text.secondary" align="center">
+        <Typography variant="body2" color="text.secondary" align="center" className='pb-2'>
             {'Copyright © '}
-            <Link color="inherit" href="https://mui.com/">
-                Your Website
+            <Link color="inherit" href="https://matesito.netlify.app/">
+                Matesito
             </Link>{' '}
             {new Date().getFullYear()}
             {'.'}
         </Typography>
     );
 }
-
 
 export default function CrearCuenta() {
     const [activeStep, setActiveStep] = React.useState(0);
@@ -62,8 +61,12 @@ export default function CrearCuenta() {
             alert('Por favor, completa todos los campos.');
             return false;
         }
+        if (registerData.user.length < 3 || registerData.email.length < 8 || registerData.password.length < 8) {
+            alert('Por favor, los datos necesitan más caracteres.');
+            return false;
+        }
         return true;
-    };
+    };    
 
     const handleFinish = async () => {
         const data = { ...registerData, topic: selectedTopic };
@@ -79,7 +82,7 @@ export default function CrearCuenta() {
         }
     };
 
-    const steps = ['Shipping address', 'Payment details'];
+    const steps = ['Tópico', 'Formulario'];
 
     function getStepContent(step) {
         switch (step) {
@@ -107,14 +110,14 @@ export default function CrearCuenta() {
             >
                 <Toolbar>
                     <Typography variant="h6" color="inherit" noWrap>
-                        Company name
+                        Matesito
                     </Typography>
                 </Toolbar>
             </AppBar>
-            <Container component="main" maxWidth="sm" sx={{ mb: 4 }}>
-                <Paper variant="outlined" sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}>
+            <Container component="main" maxWidth="sm" sx={{ my: 2, }}>
+                <Paper variant="outlined" sx={{ p: 4 }}>
                     <Typography component="h1" variant="h4" align="center">
-                        Checkout
+                        Creá tu cuenta!
                     </Typography>
                     <Stepper activeStep={activeStep} sx={{ pt: 3, pb: 5 }}>
                         {steps.map((label) => (
@@ -164,8 +167,8 @@ export default function CrearCuenta() {
                         </React.Fragment>
                     )}
                 </Paper>
-                <Copyright />
             </Container>
+            <Copyright />
         </React.Fragment>
     );
 }

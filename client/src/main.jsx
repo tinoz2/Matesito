@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom/client'
 import './index.css'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import Home from './components/Home.jsx'
-import Footer from './components/Footer'
 import Login from './components/Login'
 import ExplorarCreadores from './components/ExplorarCreadores'
 import Perfil from './components/Perfil'
@@ -33,7 +32,6 @@ ReactDOM.createRoot(document.getElementById('root')).render(
           }
         />
       </Routes>
-      <Footer />
     </BrowserRouter>
   </UserProvider>
 )

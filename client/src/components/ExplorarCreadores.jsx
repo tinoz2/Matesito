@@ -11,6 +11,7 @@ import Navbar from './Navbar'
 import { useEffect, useState } from 'react'
 import { usersRequest } from '../auth/axiosAPI.js'
 import axios from 'axios'
+import Footer from './Footer'
 
 const ExplorarCreadores = () => {
     const [users, setUsers] = useState([])
@@ -127,6 +128,7 @@ const ExplorarCreadores = () => {
                     )}
                 </main>
             </div>
+            <Footer />
         </>
     )
 }

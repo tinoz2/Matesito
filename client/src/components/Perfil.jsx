@@ -9,6 +9,8 @@ import { useEffect, useState } from 'react'
 import { checkoutMercadoPagoRequest, profileRequest } from '../auth/axiosAPI.js'
 import { Link, useParams } from 'react-router-dom'
 import { useUser } from '../context/UserContext.jsx'
+import UserNotFound from '../helpers/UserNotFound.jsx'
+import Loading from '../helpers/Loading.jsx'
 
 const Perfil = () => {
 
@@ -64,14 +66,17 @@ const Perfil = () => {
         }
     }
 
-    if (loading || userLoading) return <div>Loading...</div>;
+    if (loading || userLoading) return <Loading />
 
-    if (!profileData) return <div>Usuario no encontrado</div>;
+    if (!profileData) return <UserNotFound />
 
     return (
-        <section className="relative bg-white">
+        <section className="relative bg-white pb-12">
             <div>
-                <a className="absolute" href='/perfil'>Volver</a>
+                <Link className="fixed bg-white p-4 m-2" style={{borderRadius: '50%'}} to='/perfil'><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 15 3 9m0 0 6-6M3 9h12a6 6 0 0 1 0 12h-3" />
+                </svg>
+                </Link>
             </div>
             <div>
                 <img src={banner} className='w-full h-72' alt="" />
@@ -79,7 +84,7 @@ const Perfil = () => {
 
             <div className="absolute top-52 left-1/2 transform -translate-x-1/2 translate-y-1/12">
                 <img src={icon} className='w-40 rounded-full border-4' alt="" />
-            </div>  
+            </div>
             <div className='mt-24 flex justify-center flex-col items-center'>
                 <div className='flex items-center'>
                     <h2 className='text-3xl font-semibold'>{profileData.user}</h2>
